@@ -29,7 +29,7 @@ function AddProject() {
                 <Modal.Body>
                     <div className='row'>
                         <div className='col-6'>
-                            <img src="https://cdn.iconscout.com/icon/free/png-256/free-gallery-187-902099.png" style={{ width: '100%' }} alt="" srcset="" />
+                            <img src="https://cdn.iconscout.com/icon/free/png-256/free-gallery-187-902099.png" style={{ width: '100%',height:'240px' }} alt="" srcset="" />
                         </div>
                         <div className='col-6'>
                                 <div className='mt-2'><input type="text" class="form-control" placeholder='Project Title' /></div>

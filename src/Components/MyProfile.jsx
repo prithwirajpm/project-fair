@@ -28,6 +28,9 @@ function MyProfile() {
                             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                                 <Form.Control type="email" placeholder="LinkedIn" />
                             </Form.Group>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                <Form.Control type="button" value='Update' className='btn btn-primary' />
+                            </Form.Group>
                         </Form>
                     </div>
                 </div>
