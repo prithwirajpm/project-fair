@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col,Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import titleImage from '../Assets/3d-render-illustration-of-project-management-finance-icon-png.webp'
 import ProjectCard from '../Components/ProjectCard'
 
 function Home() {
+const[loggedin,setloggedin]=useState(false)
+  useEffect(()=>{
+    if(sessionStorage.getItem("token")){
+      setloggedin(true)
+    }else{
+      setloggedin(false)
+    }
+  })
   return (
     <>
     {/* landin section */}
@@ -13,7 +21,12 @@ function Home() {
           <Col sm={12} md={6}>
             <h1 style={{fontSize:'80px'}} className='fw-bolder text-light'><i className="fa-brands fa-stack-overflow fa-beat"></i> Project Fair</h1>
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque eveniet iste rerum. Libero labore ad ipsum voluptates pariatur. Sunt error nobis ab pariatur temporibus veniam, numquam quidem veritatis harum quibusdam!</p>
-            <Link to={'/login'} className='btn btn-warning'>Start to Explore<i className="fa-solid fa-arrow-right-long"></i></Link>
+            
+            {
+              loggedin?<Link to={'/dashboard'} className='btn btn-warning'>Manage your Project<i className="fa-solid fa-arrow-right-long"></i></Link>:<Link to={'/login'} className='btn btn-warning'>Start to Explore<i className="fa-solid fa-arrow-right-long"></i></Link>
+            }
+            
+            
           </Col>
           <Col sm={12} md={6}>
           <img style={{marginTop:'100px'}} className='w-75' src={titleImage} />

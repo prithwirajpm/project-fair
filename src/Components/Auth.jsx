@@ -4,7 +4,7 @@ import Login from '../Assets/loginandreg.png'
 import { Form } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { registerAPI } from '../Services/allAPI';
+import { loginAPI, registerAPI } from '../Services/allAPI';
 
 function Auth({ register }) {
     const navigate = useNavigate()
@@ -33,6 +33,31 @@ function Auth({ register }) {
             }
         }
     }
+
+    const handleLogin = async(e)=>{
+        e.preventDefault()
+        const {email,password} = userData
+        if(!email || !password){
+            toast.info("Please fill the form completely")
+
+        }else{
+            const result = await loginAPI(userData)
+            if(result.status===200){
+                sessionStorage.setItem("existingUser",JSON.stringify(result.data.existingUser))
+                sessionStorage.setItem("token",result.data.token)
+                setUserData({
+                    email:"",password:""
+                })
+                navigate('/')
+            }else{
+                toast.warning(result.response.data)
+                console.log(result);
+            }
+        }
+    }
+
+
+
     return (
         <div style={{ width: '100%', height: '100vh' }} className='d-flex justify-content-center align-items-center'>
             <div className='w-75 container'>
@@ -78,7 +103,7 @@ function Auth({ register }) {
                                         <p>Already have an Account? Click here to <Link to={'/login'}>Login</Link></p>
                                     </div>:
                                     <div>
-                                    <button className='btn btn-light mb-2'>Login</button>
+                                    <button className='btn btn-light mb-2' onClick={(e)=>handleLogin(e)}>Login</button>
                                     <p>New User? Click here to <Link to={'/register'}>Register</Link></p>
                                 </div>
 
