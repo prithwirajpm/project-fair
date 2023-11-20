@@ -12,7 +12,7 @@ function AddProject() {
         title: "", language: "", overview: "", github: "", website: "", projectImage: ""
     })
     const [preview, setpreview] = useState("")
-    const [token,setToken] = useState("")
+    const [token, setToken] = useState("")
     console.log(projectDetails);
 
     const handleClose = () => {
@@ -28,46 +28,49 @@ function AddProject() {
         }
     }, [projectDetails.projectImage])
 
-    useEffect(()=>{
-        if(sessionStorage.getItem("token")){
+    useEffect(() => {
+        if (sessionStorage.getItem("token")) {
             setToken(sessionStorage.getItem("token"))
-        }else{
-            setToken("")  
+        } else {
+            setToken("")
         }
-    },[])
+    }, [])
 
 
     // AddProject
 
-    const handleAdd = async (e)=>{
+    const handleAdd = async (e) => {
         e.preventDefault()
-        const {title,language,overview,projectImage,github,website} = projectDetails
-        if(!title ||!language ||!overview ||!projectImage ||!github ||!website){
+        const { title, language, overview, projectImage, github, website } = projectDetails
+        if (!title || !language || !overview || !projectImage || !github || !website) {
             toast.info("please fill the form completely!!!")
-        }else{
+        } else {
             const reqBody = new FormData()
-            reqBody.append("title",title)
-            reqBody.append("language",language)
-            reqBody.append("overview",overview)
-            reqBody.append("projectImage",projectImage)
-            reqBody.append("github",github)
-            reqBody.append("website",website)
+            reqBody.append("title", title)
+            reqBody.append("language", language)
+            reqBody.append("overview", overview)
+            reqBody.append("projectImage", projectImage)
+            reqBody.append("github", github)
+            reqBody.append("website", website)
 
-            if(token){
-                reqHeader = {
-                    "Content-Type":"multipart/form-data",
-                    "Authorization":`Bearer ${token}`
+            if (token) {
+               const reqHeader = {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": `Bearer ${token}`
+                }
+                const result = await addProjectAPI(reqBody, reqHeader)
+
+                if (result.status === 200) {
+                    console.log(result.data);
+                    handleClose()
+                    alert("Project added")
+                } else {
+                    console.log(result);
+                    toast.warning(result.response.data);
                 }
             }
-           
-            const result = await addProjectAPI(reqBody,reqHeader)
-            
-            if(result.status===200){
-                console.log(result.data);
-            }else{
-                console.log(result);
-                console.log(result.response.data);
-            }
+
+
         }
     }
 
@@ -115,7 +118,7 @@ function AddProject() {
                     <Button variant="secondary" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button variant="primary" onClick={(e)=>handleAdd(e)}>Add</Button>
+                    <Button variant="primary" onClick={(e) => handleAdd(e)}>Add</Button>
                 </Modal.Footer>
             </Modal>
             <ToastContainer position='top-right' theme='colored' />
