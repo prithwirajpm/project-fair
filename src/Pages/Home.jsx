@@ -3,16 +3,29 @@ import { Col,Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import titleImage from '../Assets/3d-render-illustration-of-project-management-finance-icon-png.webp'
 import ProjectCard from '../Components/ProjectCard'
+import { homeProjectsAPI } from '../Services/allAPI'
 
 function Home() {
 const[loggedin,setloggedin]=useState(false)
+const [homeProject,setHomeProject]=useState([])
+
+const getHomeProject = async ()=>{
+  const result = await homeProjectsAPI()
+  if(result.status==200){
+    setHomeProject(result.data)
+  }else{
+    console.log(result);
+    console.log(result.response.data)
+  }
+}
   useEffect(()=>{
     if(sessionStorage.getItem("token")){
       setloggedin(true)
     }else{
       setloggedin(false)
     }
-  })
+    getHomeProject()
+  },[])
   return (
     <>
     {/* landin section */}
@@ -39,10 +52,14 @@ const[loggedin,setloggedin]=useState(false)
         <h1 className='text-center mb-5'>Explore Our Projects</h1>
         <marquee scrollAmount={25}>
           <Row>
-            <Col sm={12} md={6} lg={4}>
-              <ProjectCard />
+            {homeProject?.length>0?homeProject.map(project=>(
+              <Col sm={12} md={6} lg={4}>
+              <ProjectCard project={project} />
             </Col>
-           
+            )):null
+
+            }
+            
           </Row>
 
         </marquee>
