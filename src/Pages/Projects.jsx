@@ -6,6 +6,7 @@ import { allProjectsAPI } from '../Services/allAPI';
 
 function Projects() {
   const [allProjects, setallProjects] = useState()
+  const [searchKey,setSearchKey] = useState("")
 
   const getallProjects = async () => {
     if (sessionStorage.getItem("token")) {
@@ -14,7 +15,7 @@ function Projects() {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       }
-      const result = await allProjectsAPI(reqHeader)
+      const result = await allProjectsAPI(searchKey,reqHeader)
       if (result.status == 200) {
         setallProjects(result.data)
       } else {
@@ -25,7 +26,7 @@ function Projects() {
 
   useEffect(() => {
     getallProjects()
-  }, [])
+  }, [searchKey])
   return (
     <div>
       <Header />
@@ -33,7 +34,7 @@ function Projects() {
         <h1 className='text-center mb-5'>All Projects</h1>
         <div className='d-flex justify-content-center align-items-center w-100'>
           <div className='d-flex border w-50 rounded'>
-            <input type='text' className='form-control' placeholder='search Project its technolagy ' />
+            <input type='text' className='form-control' onChange={e=>setSearchKey(e.target.value)} placeholder='search Project its technolagy ' />
             <i style={{ marginLeft: '-50px' }} class="fa-solid fa-magnifying-glass fa-rotate-90"></i>
           </div>
         </div>
@@ -43,7 +44,7 @@ function Projects() {
           <Col sm={12} md={6} lg={4}>
             <ProjectCard project={project} />
           </Col>
-        )) : null}
+        )) : <p>Please Login !!!!</p>}
 
       </Row>
     </div>

@@ -1,7 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { userProjectsAPI } from '../Services/allAPI'
 import AddProject from './AddProject'
 
 function MyProject() {
+    const [userProject,setUserProject] = useState([])
+    const getUserProject = async ()=>{
+        if(sessionStorage.getItem("token")){
+            const token = sessionStorage.getItem("token")
+            const reqHeader = {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+              }
+              const result = await userProjectsAPI(reqHeader)
+              if(result.status===200){
+                setUserProject(result.data)
+              }else{
+                console.log(result);
+                console.log(result.response.data);
+              }
+        }
+    } 
+    useEffect(()=>{
+        getUserProject() 
+    },[])
   return (
     <div className='card shadow p-3 mt-3'>
 
@@ -10,14 +31,18 @@ function MyProject() {
             <div className='ms-auto'> <AddProject /></div>
         </div>
         <div className='mt-4'>
-            <div className='border d-flex align-items-center rounded p-2'>
-                <h5>Projet Title</h5>
+            {userProject?.length>0? userProject.map(project=>(
+                <div className='border d-flex align-items-center rounded p-2'>
+                <h5>{project.title}</h5>
                 <div className='icon ms-auto'>
                     <button className='btn'><i className="fa-solid fa-pen-to-square"></i></button>
-                    <button className='btn'><i className="fa-brands fa-github"></i></button>
+                    <a href={`${project.github}`} target="_blank" className='btn'><i className="fa-brands fa-github"></i></a>
                     <button className='btn'><i className="fa-solid fa-trash"></i></button>
                 </div>
             </div>
+
+            )):<p>No Project Upload Yet</p>}
+            
         </div>
     </div>
   )
