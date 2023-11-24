@@ -1,15 +1,12 @@
 import React, { createContext, useState } from "react";
-
 export const addProjectResponseContext = createContext()
-
-
-function contextShare({children}){
-    const [addProjectResponse,setaddProjectResponse] = useState({})
-    return(
+function ContextSahare({ children }) {
+    const [addProjectResponse, setAddProjectResponse] = useState({})
+    return (
         <>
-        <addProjectResponseContext.Provider value={{addProjectResponse,setaddProjectResponse}}>{children}</addProjectResponseContext.Provider>
+            <addProjectResponseContext.Provider value={{ addProjectResponse, setAddProjectResponse }}>{children}</addProjectResponseContext.Provider>
         </>
     )
 }
 
-export default contextShare
+export default ContextSahare

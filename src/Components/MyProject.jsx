@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { addProjectResponseContext } from '../Contexts/ContextSahare'
 import { userProjectsAPI } from '../Services/allAPI'
 import AddProject from './AddProject'
+import EditProject from './EditProject'
 
 function MyProject() {
+  const {addProjectResponse,setAddProjectResponse} = useContext(addProjectResponseContext)
     const [userProject,setUserProject] = useState([])
     const getUserProject = async ()=>{
         if(sessionStorage.getItem("token")){
@@ -14,6 +17,7 @@ function MyProject() {
               const result = await userProjectsAPI(reqHeader)
               if(result.status===200){
                 setUserProject(result.data)
+                console.log(result.data);
               }else{
                 console.log(result);
                 console.log(result.response.data);
@@ -22,7 +26,7 @@ function MyProject() {
     } 
     useEffect(()=>{
         getUserProject() 
-    },[])
+    },[addProjectResponse])
   return (
     <div className='card shadow p-3 mt-3'>
 
@@ -35,7 +39,7 @@ function MyProject() {
                 <div className='border d-flex align-items-center rounded p-2'>
                 <h5>{project.title}</h5>
                 <div className='icon ms-auto'>
-                    <button className='btn'><i className="fa-solid fa-pen-to-square"></i></button>
+                   <EditProject project={project} />
                     <a href={`${project.github}`} target="_blank" className='btn'><i className="fa-brands fa-github"></i></a>
                     <button className='btn'><i className="fa-solid fa-trash"></i></button>
                 </div>
