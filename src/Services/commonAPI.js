@@ -6,6 +6,7 @@ export const commonAPI = async (httpRequest,url,reqBody,reqHeader)=>{
         url,
         data:reqBody,
         headers:reqHeader?reqHeader:{"Content-Type":"application/json"}
+        
     }
     return await axios(reqConfig).then(
         (result)=>{
