@@ -5,8 +5,10 @@ import { Form } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginAPI, registerAPI } from '../Services/allAPI';
+import { tokenAutherisationContext } from '../Contexts/TokenAuth';
 
 function Auth({ register }) {
+    const {isAuthorized,setIsAuthorized} = useContext(tokenAutherisationContext)
     const navigate = useNavigate()
     const [userData,setUserData]=useState({
         username:"",email:"",password:""

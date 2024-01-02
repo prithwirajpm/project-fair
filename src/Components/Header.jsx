@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Container,Navbar } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { tokenAutherisationContext } from '../Contexts/TokenAuth'
 
 function Header({insideHeader}) {
+  const {isAuthorized,setIsAuthorized} = useContext(tokenAutherisationContext)
+  const navigate = useNavigate()
+  const handleLogout = ()=>{
+    sessionStorage.removeItem("existingUser")
+    sessionStorage.removeItem("token")
+    setIsAuthorized(false)
+    navigate('/')
+  }
   return (
     <>
    
@@ -11,7 +20,7 @@ function Header({insideHeader}) {
           <Navbar.Brand>
           <h1 style={{fontSize:'30px'}} className='fw-bolder text-light'><i className="fa-brands fa-stack-overflow fa-beat"></i> <Link to={'/'}>Project Fair</Link></h1>
           </Navbar.Brand>
-          {insideHeader && <button className='btn btn-primary'>LogOut</button> }
+          {insideHeader && <button className='btn btn-primary' onClick={handleLogout}>LogOut</button> }
         </Container>
       </Navbar>
     
